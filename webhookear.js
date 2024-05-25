@@ -50,6 +50,6 @@ app.use((err, req, res, next) => {
 });
 
 const port = 3000;
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`Webhook listener for DropletEar running on port ${port}`);
 });
