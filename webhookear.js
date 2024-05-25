@@ -4,7 +4,6 @@ const { exec } = require("child_process");
 
 const app = express();
 
-// Middleware to log raw body
 app.use((req, res, next) => {
   let data = "";
   req.on("data", (chunk) => {
@@ -19,20 +18,20 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.post("/webhook", (req, res) => {
-  console.log("Webhook received");
+  console.log("Webhook received for DropletEar");
   console.log("Headers:", req.headers);
   console.log("Raw Body:", req.rawBody);
   console.log("Parsed Body:", req.body);
 
   if (req.headers["x-github-event"] === "push") {
     exec(
-      "cd /root/projects/DropletEar && git pull origin main && pm2 restart webhook-listener && cd /root/projects/PuppetMicro && git pull origin main && npm install && pm2 restart puppeteer-service",
+      "cd /root/projects/DropletEar && git pull origin main && pm2 restart webhook-listener",
       (err, stdout, stderr) => {
         if (err) {
           console.error(`Error pulling changes: ${stderr}`);
           return res.sendStatus(500);
         }
-        console.log(`Pulled latest changes: ${stdout}`);
+        console.log(`Pulled latest changes for DropletEar: ${stdout}`);
         res.sendStatus(200);
       }
     );
@@ -52,5 +51,5 @@ app.use((err, req, res, next) => {
 
 const port = 3000;
 app.listen(port, "0.0.0.0", () => {
-  console.log(`Webhook listener running on port ${port}`);
+  console.log(`Webhook listener for DropletEar running on port ${port}`);
 });
